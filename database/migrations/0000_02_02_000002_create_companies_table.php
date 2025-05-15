@@ -12,14 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->ulid('country_id')->index();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();
 
             addAuditColumns($table);
+            addConfigColumns($table);
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('regions');
+        Schema::dropIfExists('companies');
     }
 };

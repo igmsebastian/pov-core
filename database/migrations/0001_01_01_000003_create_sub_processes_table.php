@@ -12,14 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('sub_processes', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('department_id')->index();
+            $table->ulid('process_id')->nullable();
             $table->string('name')->nullable();
-            $table->string('manager')->nullable();
-            $table->string('lead')->nullable();
+            $table->text('description')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
+            $table->timestamps();
+
             addAuditColumns($table);
+            addConfigColumns($table);
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('sub_processes');
     }
 };

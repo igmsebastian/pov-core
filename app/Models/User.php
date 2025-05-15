@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -14,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements LdapAuthenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
+    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap, HasUlids;
 
     /**
      * The attributes that are mass assignable.
@@ -24,17 +25,14 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+        'samaccountname',
+        'company',
+        'title',
+        'manager',
+        'lead',
+        'role_id',
+        'configs',
+        'metas',
     ];
 
     /**
@@ -45,8 +43,13 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'configs' => 'array',
+            'metas' => 'array',
         ];
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'user_permissions');
     }
 }

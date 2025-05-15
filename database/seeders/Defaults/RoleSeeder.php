@@ -14,10 +14,25 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (RoleEnum::cases() as $role) {
+        $roles = [
+            [
+                'name' => 'admin',
+                'description' => 'System administrator with full access.',
+            ],
+            [
+                'name' => 'manager',
+                'description' => 'Manager with access to oversee processes and teams.',
+            ],
+            [
+                'name' => 'user',
+                'description' => 'Standard user with limited permissions.',
+            ],
+        ];
+
+        foreach ($roles as $role) {
             Role::updateOrCreate(
-                ['id' => $role->value],
-                ['name' => strtolower($role->name)]
+                ['name' => $role['name']],
+                ['description' => $role['description']]
             );
         }
     }

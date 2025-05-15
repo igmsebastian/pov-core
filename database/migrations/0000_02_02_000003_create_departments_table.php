@@ -12,15 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('country_id')->index();
+            $table->ulid('company_id')->index();
             $table->string('name')->nullable();
-            $table->text('description')->nullable();
+            $table->string('manager')->nullable();
+            $table->string('lead')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();
 
             addAuditColumns($table);
+            addConfigColumns($table);
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('departments');
     }
 };

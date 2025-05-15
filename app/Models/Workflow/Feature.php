@@ -1,14 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Workflow;
 
-use App\Models\Concerns\Auditable;
-use Illuminate\Database\Eloquent\Model;
-
-class Role extends Model
+class Feature extends WorkflowModel
 {
-    use Auditable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -16,6 +11,8 @@ class Role extends Model
      */
     protected $fillable = [
         'name',
+        'description',
+        'status',
         'configs',
         'metas',
     ];

@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Models\Concerns\Auditable;
-use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Permission extends Model
 {
     use Auditable;
 
@@ -15,7 +14,11 @@ class Role extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'action',
+        'resource',
+        'description',
+        'category',
+        'scope',
         'configs',
         'metas',
     ];
