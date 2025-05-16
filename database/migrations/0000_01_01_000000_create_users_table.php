@@ -42,6 +42,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('guid')->nullable()->index();
             $table->string('samaccountname')->nullable();
             $table->string('company')->nullable();
             $table->string('title')->nullable();

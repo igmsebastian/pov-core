@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Rbac;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PermissionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,15 +16,11 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'company' => $this->company,
-            'title' => $this->title,
-            'manager' => $this->manager,
-            'lead' => $this->lead,
-            'status' => $this->status->asObject(),
-            'role' => $this->role,
-            'permissions' => [],
+            'action' => $this->action,
+            'resource' => $this->resource,
+            'description' => $this->description,
+            'category' => $this->category,
+            'scope' => $this->category,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class EmailService extends Service
+class UserService extends Service
 {
     //
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\UserController;
 
 /**
  * User Routes
- *
  */
 Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::get('/', 'getUserList');
