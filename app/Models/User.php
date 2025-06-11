@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use Laravel\Passport\HasApiTokens;
-use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -23,14 +24,21 @@ class User extends Authenticatable implements LdapAuthenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
         'guid',
         'samaccountname',
-        'company',
+        'dn',
+        'name',
+        'email',
         'title',
+        'company',
+        'division',
+        'memberof',
+        'department',
+        'departmentNumber',
         'manager',
+        'manager_email',
         'lead',
+        'lead_email',
         'role_id',
         'configs',
         'metas',
@@ -46,6 +54,7 @@ class User extends Authenticatable implements LdapAuthenticatable
         return [
             'configs' => 'array',
             'metas' => 'array',
+            'role_id' => RoleEnum::class,
         ];
     }
 

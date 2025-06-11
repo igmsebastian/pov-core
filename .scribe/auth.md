@@ -1,11 +1,7 @@
-# Authenticating Requests
+# Authenticating requests
 
-To authenticate requests, include an **`Authorization`** header with the value **`"Bearer {YOUR_ACCESS_TOKEN}"`**.
+To authenticate requests, include an **`Authorization`** header with the value **`"Bearer {YOUR_AUTH_KEY}"`**.
 
-All protected endpoints are marked with a `requires authentication` badge in the documentation below.
+All authenticated endpoints are marked with a `requires authentication` badge in the documentation below.
 
-Authenticated user data is retrieved via an **LDAP connection**.
-
-To obtain your access token, send a `POST` request to the **`/api/auth/login`** endpoint with your LDAP credentials.
-
-Once authenticated, you will receive an access token to include in your API requests.
+You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.

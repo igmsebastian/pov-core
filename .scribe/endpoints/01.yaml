@@ -1,47 +1,17 @@
-name: Endpoints
+name: '02 - User API Resources'
 description: ''
 endpoints:
-  -
-    httpMethods:
-      - POST
-    uri: api/auth/access-token
-    metadata:
-      groupName: Endpoints
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
-      custom: []
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-    custom: []
   -
     httpMethods:
       - GET
     uri: api/users
     metadata:
-      groupName: Endpoints
+      groupName: '02 - User API Resources'
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
-      description: ''
+      title: 'Get list of users with filters.'
+      description: 'Retrieve a paginated list of users. You can apply filters such as email, name, company, or role.'
       authenticated: false
       custom: []
     headers:
@@ -49,23 +19,77 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      email:
+        name: email
+        description: 'Filter by email.'
+        required: false
+        example: user@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'Filter by full or partial name.'
+        required: false
+        example: John
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      company:
+        name: company
+        description: 'Filter by company name.'
+        required: false
+        example: 'Acme Corp'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      role:
+        name: role
+        description: 'Filter by role.'
+        required: false
+        example: admin
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      email: user@example.com
+      name: John
+      company: 'Acme Corp'
+      role: admin
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
-        status: 500
+        status: 200
         content: |-
           {
-              "message": "Server Error"
+            "data": [
+              {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john@example.com",
+                "company": "Acme",
+                "role": "user"
+              }
+            ],
+            "meta": {
+              "current_page": 1,
+              "last_page": 5,
+              "total": 50
+            }
           }
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -78,12 +102,12 @@ endpoints:
       - POST
     uri: api/users
     metadata:
-      groupName: Endpoints
+      groupName: '02 - User API Resources'
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
-      description: ''
+      title: 'Create a new user.'
+      description: 'Creates a new user with the provided attributes.'
       authenticated: false
       custom: []
     headers:
@@ -93,10 +117,229 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The full name of the user.'
+        required: true
+        example: 'Jane Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      email:
+        name: email
+        description: 'The email address.'
+        required: true
+        example: jane@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      role:
+        name: role
+        description: "The user's role."
+        required: true
+        example: admin
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      company:
+        name: company
+        description: 'The company name.'
+        required: false
+        example: Acme
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: 'Jane Doe'
+      email: jane@example.com
+      role: admin
+      company: Acme
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: |-
+          {
+            "message": "User created successfully",
+            "user": {
+              "id": 2,
+              "name": "Jane Doe",
+              "email": "jane@example.com",
+              "role": "admin",
+              "company": "Acme"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/users/{user_id}'
+    metadata:
+      groupName: '02 - User API Resources'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Get selected user's details."
+      description: 'Returns the profile of the currently selected user.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_id:
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 01jwqqgc2dp2vjj8r10ja9acmy
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      user:
+        name: user
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      user_id: 01jwqqgc2dp2vjj8r10ja9acmy
+      user: 1
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "company": "Acme Corp",
+            "role": "admin"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/users/{user_id}'
+    metadata:
+      groupName: '02 - User API Resources'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update an existing user.'
+      description: 'Updates the user’s data with the given attributes.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_id:
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 01jwqqgc2dp2vjj8r10ja9acmy
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      user:
+        name: user
+        description: 'The ID of the user to update.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      user_id: 01jwqqgc2dp2vjj8r10ja9acmy
+      user: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The updated name.'
+        required: false
+        example: 'Jane Smith'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      email:
+        name: email
+        description: 'The updated email.'
+        required: false
+        example: jane.smith@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      company:
+        name: company
+        description: 'The updated company.'
+        required: false
+        example: Acme
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: 'Jane Smith'
+      email: jane.smith@example.com
+      company: Acme
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "message": "User updated successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
     auth: []
     controller: null

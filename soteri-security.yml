@@ -1,0 +1,6 @@
+allowlist_paths:
+  - app/Http/Responses/AuthResponse.json
+  - resources/assets/vendor/libs/*
+  - public/docs/index.html
+  - .env.example
+  - composer.lock

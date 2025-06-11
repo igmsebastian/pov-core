@@ -14,6 +14,7 @@ class DefaultSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            UserSeeder::class,
             PermissionSeeder::class,
         ]);
     }

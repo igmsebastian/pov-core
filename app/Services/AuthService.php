@@ -3,15 +3,17 @@
 namespace App\Services;
 
 use Exception;
+use App\Models\User;
+use App\Models\LdapUser;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Http;
 use LdapRecord\Container as AdContainer;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Auth\LoginResource;
 use App\Services\Concerns\HandlesAuthenticator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthService extends Service
 {
@@ -37,52 +39,81 @@ class AuthService extends Service
         }
     }
 
-    public function getAccessToken(Request $request)
+    public function getUserByLogonUser(string $logonUser): User
     {
-        $client = $this->userRepository->fetchClient();
+        if (config('ldap.enabled') === true) {
+            if (!str_contains($logonUser, '\\')) {
+                throw new \InvalidArgumentException("Invalid LOGON_USER format");
+            }
+    
+            [$domain, $username] = explode('\\', $logonUser);
 
-        $user = (config('ldap.enabled') == true)
-                ? $this->getUserLdapAuthenticator()
-                : $this->userRepository->findUserByEmail(config('ldap.test.email'));
+            $ldapUser = LdapUser::where('samaccountname', $username)->first();
 
-        $requestToken = Request::create(url('/oauth/token'), 'POST', [
-            'grant_type' => 'password',
-            'client_id' => $client->id,
-            'client_secret' => $client->secret,
-            'username' => $user->email,
-            'password' => 'password',
-            'scope' => ''
-        ]);
+            if (!$ldapUser) {
+                throw new NotFoundHttpException("LDAP user not found for email: $email");
+            }
 
-        $response = $this->getResponse($requestToken);
-
-        if (!$request->wantsJson()) {
-			$url = session('urlreferer')
-                ? session('urlreferer').'auth/sso/redirect'
-                : config('pov.auth_redirect_url');
-
-            $params = http_build_query($response);
-
-            return redirect()->away("{$url}?{$params}");
+            $user = $this->userRepository->syncLdapUser($ldapUser);
+        } else {
+            $user = $this->userRepository->findUserByEmail($logonUser);
         }
 
-        $response->user = $user;
+        return $user;
+    }
+
+    public function getAccessToken(Request $request)
+    {
+        $logonUser = request()->server('LOGON_USER');
+
+        if (!$logonUser) {
+            $this->sendUnauthenticatedResponse('No authenticated user found');
+        }
+
+        $user = $this->getUserByLogonUser($logonUser);
+
+        if (is_null($user)) {
+            return $this->sendNotFoundResponse('User not found or could not be synced');
+        }
+
+        $tokenResult = $user->createToken('SSO Token');
+        $token = $tokenResult->accessToken;
+        $expiresAt = $tokenResult->token->expires_at;
+
+        dd($tokenResult);
+
+        if ($response->failed()) {
+            return $this->sendUnauthenticatedResponse('Token request failed');
+        }
+
+        dd($response->json());
+
+        $token = $user->createToken('SSO Token')->accessToken;
+
+        if (!$request->wantsJson()) {
+            $url = session('urlreferer') ?: config('app.url_front');
+            return redirect()->away("{$url}?token={$token}");
+        }
 
         return new LoginResource($response);
     }
 
-    public function getRefreshToken(Request $request): AuthResource
+    public function getRefreshToken(Request $request)
     {
-        $client = $this->userRepository->fetchClient();
-
-        $request = Request::create(url('/oauth/token'), 'POST', [
+        $response = Http::asForm()->post(url('/oauth/token'), [
             'grant_type' => 'refresh_token',
             'refresh_token' => $request->refresh_token,
-            'client_id' => $client->id,
-            'client_secret' => $client->secret,
-            'scope' => ''
+            'client_id' => config('passport.password_client_id'),
+            'client_secret' => config('passport.password_client_secret'),
+            'scope' => '',
         ]);
 
-        return new AuthResource($this->getResponse($request));
+        if ($response->failed()) {
+            return $this->sendUnauthenticatedResponse("Unable to refresh token");
+        }
+
+        dd($response);
+
+        // return new AuthResource($response);
     }
 }

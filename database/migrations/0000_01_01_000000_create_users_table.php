@@ -39,16 +39,30 @@ return new class extends Migration
         });
 
         Schema::create('users', function (Blueprint $table) {
+            $driver = Schema::getConnection()->getDriverName();
+
             $table->ulid('id')->primary();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('guid')->nullable()->index();
-            $table->string('samaccountname')->nullable();
-            $table->string('company')->nullable();
+            $table->string('guid')->nullable();
+            $table->string('samaccountname')->unique();
+            $table->text('dn')->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+
+            if ($driver !== 'sqlsrv') {
+                $table->unique('guid');
+            }
+
             $table->string('title')->nullable();
+            $table->string('company')->nullable();
+            $table->string('division')->nullable();
+            $table->text('memberof')->nullable();
+            $table->string('department')->nullable();
+            $table->string('departmentNumber')->nullable();
             $table->string('manager')->nullable();
+            $table->string('manager_email')->nullable();
             $table->string('lead')->nullable();
-            $table->foreignId('role_id')->constrained('roles')->default(RoleEnum::USER->value);
+            $table->string('lead_email')->nullable();
+            $table->unsignedBigInteger('role_id')->default(RoleEnum::USER->value);
             $table->ulid('team_id')->nullable()->index();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();

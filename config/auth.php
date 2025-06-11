@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -63,7 +67,9 @@ return [
         'users' => [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [],
+            'rules' => [
+                App\Ldap\Rules\OnlyListedUsers::class,
+            ],
             'scopes' => [],
             'database' => [
                 'model' => env('AUTH_MODEL', App\Models\User::class),

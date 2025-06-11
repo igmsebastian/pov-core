@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\DB;
 use LdapRecord\Models\Model as LdapRecord;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class OnlyListedUsers extends Rule
+class OnlyListedUsers implements Rule
 {
+    /**
+     * Check if the rule passes validation.
+     */
     public function passes(LdapRecord $user, ?Eloquent $model = null): bool
     {
         $email = $user->mail[0] ?? null;
-
+        dd('hi');
         abort_unless(
             $email,
             Response::HTTP_UNAUTHORIZED,
