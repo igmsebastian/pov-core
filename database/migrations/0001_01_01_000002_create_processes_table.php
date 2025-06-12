@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('processes', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('country_id')->index();
+            $table->ulid('company_id')->index();
             $table->ulid('module_id')->nullable();
+            $table->string('country', 2)->comment('iso2')->index();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);

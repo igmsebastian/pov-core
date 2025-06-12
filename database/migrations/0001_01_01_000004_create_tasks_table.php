@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('country', 2)->comment('iso2')->index();
             $table->ulid('sub_process_id')->nullable();
             $table->ulid('feature_id')->nullable()->index();
             $table->string('name')->nullable();

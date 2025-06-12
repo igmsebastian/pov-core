@@ -2,10 +2,10 @@
 
 namespace Database\Seeders\Defaults;
 
+use App\Models\Module;
 use App\Models\User;
-use App\Enums\RoleEnum;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Define users to seed
         $users = [
             [
                 'samaccountname' => 'ian.sebastian',
@@ -27,12 +28,33 @@ class UserSeeder extends Seeder
             [
                 'samaccountname' => 'ricardo.liera',
             ],
+            [
+                'samaccountname' => 'martin.gamboa',
+            ],
         ];
 
+        // Fetch all permissions for the Admin-like access (or specific permissions you want)
+        $adminPermissions = Permission::where('action', 'manage') // Filter by 'manage' action
+            ->get()
+            ->map(function ($permission) {
+                return $permission->resource . ':' . $permission->action; // Combine resource and action
+            })
+            ->toArray();
+
+        $modules = Module::get()->pluck('code')->toArray();
+
+        // Loop through each user and assign permissions directly
         foreach ($users as $user) {
-            User::updateOrCreate(
+            // Create or update the user with the permissions in the configs field
+            $userModel = User::updateOrCreate(
                 ['samaccountname' => $user['samaccountname']],
-                ['samaccountname' => $user['samaccountname'], 'role_id' => RoleEnum::ADMIN]
+                [
+                    'samaccountname' => $user['samaccountname'],
+                    'configs' => [
+                        'permissions' => $adminPermissions, // Store all permissions directly in the configs
+                        'modules' => $modules, // Store all permissions directly in the configs
+                    ]
+                ]
             );
         }
     }

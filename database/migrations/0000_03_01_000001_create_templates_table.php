@@ -14,9 +14,13 @@ return new class extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('user_id')->index();
+            $table->string('country', 2)->comment('iso2')->index();
+            $table->ulid('feature_id')->index();
+            $table->ulid('module_id')->index();
             $table->string('name');
+            $table->string('code')->index();
             $table->text('description')->nullable();
+            $table->longText('raw')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();
 

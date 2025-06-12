@@ -40,7 +40,7 @@ class UserRepository
 
         $department = $ldapUser->getFirstAttribute('department');
         $departmentNumber = $ldapUser->getFirstAttribute('departmentNumber');
-        
+
         // Extract Manager
         $manager = $ldapUser->getFirstAttribute('manager');
 
@@ -73,7 +73,12 @@ class UserRepository
 
     public function findUserByEmail(string $email): User|null
     {
-        return User::firstWhere($email);
+        return User::firstWhere('email', $email);
+    }
+
+    public function findUserBySamaccountname(string $samaccountname): User|null
+    {
+        return User::firstWhere('samaccountname', $samaccountname);
     }
 
     public function create(array $data): Collection

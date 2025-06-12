@@ -14,8 +14,10 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('country', 2)->comment('iso2')->index();
             $table->ulid('company_id')->index();
             $table->string('name')->nullable();
+            $table->string('abbr')->nullable();
             $table->string('manager')->nullable();
             $table->string('lead')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);

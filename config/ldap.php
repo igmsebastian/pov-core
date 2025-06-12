@@ -87,6 +87,7 @@ return [
     'enabled' => env('LDAP_ENABLED', true),
 
     'test' => [
+        'samaccountname' => env('LDAP_TEST_SAMACCOUNTNAME'),
         'email' => env('LDAP_TEST_EMAIL'),
         'domain' => env('LDAP_TEST_DOMAIN'),
     ],

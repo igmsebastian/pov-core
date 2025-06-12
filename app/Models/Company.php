@@ -16,8 +16,9 @@ class Company extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'country_id',
+        'country',
         'name',
+        'abbr',
         'description',
         'status',
         'configs',

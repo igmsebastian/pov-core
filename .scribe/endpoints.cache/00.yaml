@@ -12,10 +12,8 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get OAuth Access Token via LDAP-authenticated user.'
-      description: |-
-        This endpoint returns an access token and refresh token for an LDAP-authenticated user.
-        The user must be pre-authenticated (e.g., via Windows Authentication) and available via the `LOGON_USER` server variable.
+      title: ''
+      description: ''
       authenticated: false
       custom: []
     headers:
@@ -28,46 +26,7 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses:
-      -
-        status: 200
-        content: |-
-          {
-            "token_type": "Bearer",
-            "expires_in": 3600,
-            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOi...",
-            "refresh_token": "def50200c928c9df..."
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 401
-        content: |-
-          {
-            "message": "No authenticated user found"
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 404
-        content: |-
-          {
-            "message": "User not found or could not be synced"
-          }
-        headers: []
-        description: ''
-        custom: []
-      -
-        status: 500
-        content: |-
-          {
-            "message": "Token request failed"
-          }
-        headers: []
-        description: ''
-        custom: []
+    responses: []
     responseFields: []
     auth: []
     controller: null

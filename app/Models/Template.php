@@ -12,8 +12,13 @@ class Template extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'country',
+        'feature_id',
+        'module_id',
         'name',
+        'code',
         'description',
+        'raw',
         'status',
         'configs',
         'metas',
@@ -23,9 +28,4 @@ class Template extends Model
         'configs' => 'array',
         'metas' => 'array',
     ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

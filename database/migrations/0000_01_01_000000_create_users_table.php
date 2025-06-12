@@ -14,9 +14,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('code')->unique();
             $table->timestamps();
 
             addAuditColumns($table);
@@ -27,15 +28,22 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('action');
             $table->string('resource');
-            $table->text('description')->nullable();
             $table->string('category')->nullable();
             $table->string('scope')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
 
             addAuditColumns($table);
             addConfigColumns($table);
 
             $table->unique(['action', 'resource']);
+        });
+
+        Schema::create('role_permissions', function (Blueprint $table) {
+            $table->id();
+            $table->ulid('role_id');
+            $table->ulid('permission_id');
+            $table->timestamps();
         });
 
         Schema::create('users', function (Blueprint $table) {
@@ -62,21 +70,12 @@ return new class extends Migration
             $table->string('manager_email')->nullable();
             $table->string('lead')->nullable();
             $table->string('lead_email')->nullable();
-            $table->unsignedBigInteger('role_id')->default(RoleEnum::USER->value);
             $table->ulid('team_id')->nullable()->index();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();
 
             addAuditColumns($table);
             addConfigColumns($table);
-        });
-
-        Schema::create('user_permissions', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->constrained();
-            $table->foreignUlid('permission_id')->constrained();
-            $table->json('conditions')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -102,6 +101,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('roles');
         Schema::dropIfExists('permissions');
+        Schema::dropIfExists('role_permissions');
         Schema::dropIfExists('users');
         Schema::dropIfExists('user_permissions');
         Schema::dropIfExists('password_reset_tokens');

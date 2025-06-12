@@ -11,9 +11,11 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Http;
 use LdapRecord\Container as AdContainer;
 use App\Http\Resources\User\UserResource;
-use App\Http\Resources\Auth\LoginResource;
+use App\Http\Resources\Auth\TokenResource;
 use App\Services\Concerns\HandlesAuthenticator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpFoundation\Exception\UnexpectedValueException;
 
 class AuthService extends Service
 {
@@ -39,24 +41,29 @@ class AuthService extends Service
         }
     }
 
-    public function getUserByLogonUser(string $logonUser): User
+    public function getLogonUser(?string $logonUser): User
     {
         if (config('ldap.enabled') === true) {
-            if (!str_contains($logonUser, '\\')) {
-                throw new \InvalidArgumentException("Invalid LOGON_USER format");
+            if (is_null($logonUser)) {
+                throw new UnauthorizedHttpException("No authenticated user found");
             }
-    
+
+            if (!str_contains($logonUser, '\\')) {
+                throw new UnexpectedValueException("Invalid LOGON_USER format");
+            }
+
             [$domain, $username] = explode('\\', $logonUser);
 
-            $ldapUser = LdapUser::where('samaccountname', $username)->first();
+            $ldapUser = LdapUser::firstWhere('samaccountname', $username);
 
-            if (!$ldapUser) {
-                throw new NotFoundHttpException("LDAP user not found for email: $email");
+            if (is_null($ldapUser)) {
+                throw new NotFoundHttpException("LDAP user not found: $logonUser");
             }
 
             $user = $this->userRepository->syncLdapUser($ldapUser);
         } else {
-            $user = $this->userRepository->findUserByEmail($logonUser);
+            $logonUser = config('ldap.test.samaccountname');
+            $user = $this->userRepository->findUserBySamaccountname($logonUser);
         }
 
         return $user;
@@ -64,38 +71,29 @@ class AuthService extends Service
 
     public function getAccessToken(Request $request)
     {
-        $logonUser = request()->server('LOGON_USER');
+        // Retrieve the LOGON_USER from the request server data
+        $logonUser = $request->server('LOGON_USER');
 
-        if (!$logonUser) {
-            $this->sendUnauthenticatedResponse('No authenticated user found');
-        }
+        // Get the user based on the LOGON_USER, which could be null if not found
+        $user = $this->getLogonUser($logonUser);
 
-        $user = $this->getUserByLogonUser($logonUser);
-
+        // If user not found, return a "not found" response
         if (is_null($user)) {
             return $this->sendNotFoundResponse('User not found or could not be synced');
         }
 
-        $tokenResult = $user->createToken('SSO Token');
-        $token = $tokenResult->accessToken;
-        $expiresAt = $tokenResult->token->expires_at;
 
-        dd($tokenResult);
+        // Create a token for the user (Sanctum token)
+        $token = $user->createToken('Access Token', $user->configs->permissions);
 
-        if ($response->failed()) {
-            return $this->sendUnauthenticatedResponse('Token request failed');
-        }
-
-        dd($response->json());
-
-        $token = $user->createToken('SSO Token')->accessToken;
-
+        // Check if the request expects JSON or not
         if (!$request->wantsJson()) {
             $url = session('urlreferer') ?: config('app.url_front');
-            return redirect()->away("{$url}?token={$token}");
+            return redirect()->away("{$url}?token={$token->plainTextToken}");
         }
 
-        return new LoginResource($response);
+        // If JSON response is needed, return the token within a structured response (LoginResource or similar)
+        return new TokenResource($token);
     }
 
     public function getRefreshToken(Request $request)

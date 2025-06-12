@@ -14,7 +14,9 @@ return new class extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('country', 2)->comment('iso2')->index();
             $table->string('name')->nullable();
+            $table->string('code')->nullable();
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();

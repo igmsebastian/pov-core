@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('sub_processes', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->string('country', 2)->comment('iso2')->index();
             $table->ulid('process_id')->nullable();
             $table->string('name')->nullable();
             $table->text('description')->nullable();

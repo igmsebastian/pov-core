@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RoleEnum;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
@@ -39,7 +39,6 @@ class User extends Authenticatable implements LdapAuthenticatable
         'manager_email',
         'lead',
         'lead_email',
-        'role_id',
         'configs',
         'metas',
     ];
@@ -52,14 +51,8 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected function casts(): array
     {
         return [
-            'configs' => 'array',
+            'configs' => 'object',
             'metas' => 'array',
-            'role_id' => RoleEnum::class,
         ];
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class, 'user_permissions');
     }
 }

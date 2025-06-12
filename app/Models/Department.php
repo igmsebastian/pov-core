@@ -16,8 +16,10 @@ class Department extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'country',
         'company_id',
         'name',
+        'abbr',
         'manager',
         'lead',
         'status',

@@ -14,11 +14,23 @@ class TokenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $token = $this->resource;
+        $accessToken = $token->accessToken;
+        $model = $accessToken->tokenable_type;
+        $user = (new $model)->find($accessToken->tokenable_id);
+
         return [
-            'expires_in' => $this->expires_in,
-            'token_type' => $this->token_type,
-            'access_token' => $this->access_token,
-            'refresh_token' => $this->refresh_token,
+            'token' => $token->plainTextToken,
+            'tokenableType' => $accessToken->tokenable_type,
+            'abilities' => $accessToken->abilities,
+            'expires_at' => $accessToken->expires_at,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'configs' => $user->configs,
+                'metas' => $user->metas
+            ]
         ];
     }
 }

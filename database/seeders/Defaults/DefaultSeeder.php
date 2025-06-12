@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Defaults;
 
+use Database\Seeders\Companies\IsscManilaSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,9 +14,9 @@ class DefaultSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RoleSeeder::class,
+            RolePermissionSeeder::class,
+            IsscManilaSeeder::class,
             UserSeeder::class,
-            PermissionSeeder::class,
         ]);
     }
 }
