@@ -8,7 +8,7 @@ use App\Http\Controllers\AuthController;
  */
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('access-token', 'getAccessToken');
-    Route::middleware('auth:api')->get('me', 'getAuthenticatedUser');
+    Route::middleware('auth:sanctum')->get('me', 'getAuthenticatedUser');
 });
 
 /**

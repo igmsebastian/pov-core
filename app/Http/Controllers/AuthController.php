@@ -20,4 +20,9 @@ class AuthController extends Controller
     {
         return $this->authService->getAccessToken($request);
     }
+
+    public function getAuthenticatedUser(Request $request)
+    {
+        //
+    }
 }
