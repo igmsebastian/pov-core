@@ -5,7 +5,6 @@ namespace App\Services;
 use Exception;
 use App\Models\User;
 use App\Models\Module;
-use App\Models\LdapUser;
 use App\Models\Permission;
 use App\Filters\UserFilter;
 use Illuminate\Http\Request;
