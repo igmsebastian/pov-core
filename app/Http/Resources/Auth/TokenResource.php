@@ -26,6 +26,7 @@ class TokenResource extends JsonResource
             'expires_at' => $accessToken->expires_at,
             'user' => [
                 'id' => $user->id,
+                'samaccountname' => $user->samaccountname,
                 'name' => $user->name,
                 'email' => $user->email,
                 'configs' => $user->configs,

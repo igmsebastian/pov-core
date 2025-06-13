@@ -32,11 +32,8 @@ class Company extends Model
     {
         return [
             'status' => StatusEnum::class,
+            'configs' => 'object',
+            'metas' => 'object',
         ];
-    }
-
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class, 'country_id');
     }
 }

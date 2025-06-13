@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\User;
 
-use App\Rules\Permissions;
+use App\Enums\UserStatusEnum;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends FormRequest
+class UpdateUserStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class CreateUserRequest extends FormRequest
         $allowedPermissions = [
             '*:*',
             'user:*',
-            'user:create',
+            'user:edit',
         ];
 
         foreach ($allowedPermissions as $ability) {
@@ -42,12 +42,9 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'samaccountname' => ['required', Rule::unique('users', 'samaccountname')],
-            'configs' => ['required', 'array'],
-            'configs.permissions'   => ['required', 'array', 'min:1'],
-            'configs.permissions.*' => ['string', new Permissions],
-            'configs.modules'   => ['required', 'array', 'min:1'],
-            'configs.modules.*' => ['string', Rule::exists('modules', 'code')],
+            'ids'   => ['required', 'array', 'min:1'],
+            'ids.*'   => ['required', 'string', 'distinct', Rule::exists('users', 'id')],
+            'status' => ['required', Rule::in(array_column(UserStatusEnum::cases(), 'value'))],
         ];
     }
 }

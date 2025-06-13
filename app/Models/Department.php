@@ -34,6 +34,8 @@ class Department extends Model
     {
         return [
             'status' => StatusEnum::class,
+            'configs' => 'object',
+            'metas' => 'object',
         ];
     }
 

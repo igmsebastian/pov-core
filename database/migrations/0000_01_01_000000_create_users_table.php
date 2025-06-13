@@ -26,8 +26,8 @@ return new class extends Migration
 
         Schema::create('permissions', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->string('action');
             $table->string('resource');
+            $table->string('action');
             $table->string('category')->nullable();
             $table->string('scope')->nullable();
             $table->text('description')->nullable();

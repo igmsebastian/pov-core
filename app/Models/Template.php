@@ -24,8 +24,14 @@ class Template extends Model
         'metas',
     ];
 
-    protected $casts = [
-        'configs' => 'array',
-        'metas' => 'array',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'configs' => 'object',
+            'metas' => 'object',
+        ];
+    }
 }

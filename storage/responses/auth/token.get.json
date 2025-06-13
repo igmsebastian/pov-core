@@ -1,0 +1,52 @@
+{
+    "token": "1|KhAdFr9H9ScOwQ3inNsOpFzLQ7fFzEOFAZ8k8H5v01cfaa68",
+    "tokenableType": "App\\Models\\User",
+    "abilities": [
+        "*:*",
+        "user:*",
+        "template:*",
+        "process:*",
+        "subprocess:*",
+        "task:*",
+        "module:*",
+        "feature:*",
+        "report:*",
+        "mail:*",
+        "notification:*",
+        "apcw:*",
+        "opr:*",
+        "ssh:*",
+        "aarm:*"
+    ],
+    "expires_at": null,
+    "user": {
+        "id": "01jxmrqd6sg3zdw2gn5ykky80e",
+        "samaccountname": "jane.doe",
+        "name": "Jane Doe",
+        "email": "jane.doe@example.com",
+        "configs": {
+            "permissions": [
+                "*:*",
+                "user:*",
+                "template:*",
+                "process:*",
+                "subprocess:*",
+                "task:*",
+                "module:*",
+                "feature:*",
+                "report:*",
+                "mail:*",
+                "notification:*",
+                "apcw:*",
+                "opr:*",
+                "ssh:*",
+                "aarm:*"
+            ],
+            "modules": ["apcw", "opr", "ssh", "aarm", "user"]
+        },
+        "metas": {
+            "timezone": "Asia/Manila",
+            "locale": "en_PH"
+        }
+    }
+}

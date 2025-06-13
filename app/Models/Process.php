@@ -19,4 +19,15 @@ class Process extends Model
         'configs',
         'metas',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'configs' => 'object',
+            'metas' => 'object',
+        ];
+    }
 }

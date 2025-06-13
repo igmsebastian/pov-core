@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteUserRequest extends FormRequest
@@ -11,6 +12,24 @@ class DeleteUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $user = $this->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        $allowedPermissions = [
+            '*:*',
+            'user:*',
+            'user:delete',
+        ];
+
+        foreach ($allowedPermissions as $ability) {
+            if ($user->tokenCan($ability)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -22,7 +41,8 @@ class DeleteUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'ids'   => ['required', 'array', 'min:1'],
+            'ids.*'   => ['required', 'string', 'distinct', Rule::exists('users', 'id')],
         ];
     }
 }

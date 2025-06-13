@@ -6,9 +6,8 @@ use Exception;
 use App\Models\User;
 use App\Models\LdapUser;
 use Illuminate\Http\Request;
-use App\Http\Resources\AuthResource;
+use Illuminate\Http\JsonResponse;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Http;
 use LdapRecord\Container as AdContainer;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Auth\TokenResource;
@@ -23,8 +22,7 @@ class AuthService extends Service
 
     public function __construct(
         private UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     public function getMe(Request $request): UserResource
     {
@@ -82,6 +80,12 @@ class AuthService extends Service
             return $this->sendNotFoundResponse('User not found or could not be synced');
         }
 
+        // Delete existing tokens
+        if ($user->tokens()->exists()) {
+            $user->tokens()->delete();
+        }
+
+        $user->tokens()->delete();
 
         // Create a token for the user (Sanctum token)
         $token = $user->createToken('Access Token', $user->configs->permissions);
@@ -92,26 +96,19 @@ class AuthService extends Service
             return redirect()->away("{$url}?token={$token->plainTextToken}");
         }
 
-        // If JSON response is needed, return the token within a structured response (LoginResource or similar)
+        // If JSON response is needed, return the token within a structured response
         return new TokenResource($token);
     }
 
-    public function getRefreshToken(Request $request)
+    public function revokeAccessToken(Request $request): JsonResponse
     {
-        $response = Http::asForm()->post(url('/oauth/token'), [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $request->refresh_token,
-            'client_id' => config('passport.password_client_id'),
-            'client_secret' => config('passport.password_client_secret'),
-            'scope' => '',
-        ]);
+        $user = $request->user();
+        $token = $user->currentAccessToken();
 
-        if ($response->failed()) {
-            return $this->sendUnauthenticatedResponse("Unable to refresh token");
-        }
+        return is_null($token)
+            ? $user->tokens()->delete()
+            : $token->delete();
 
-        dd($response);
-
-        // return new AuthResource($response);
+        return $this->sendOkResponse();
     }
 }

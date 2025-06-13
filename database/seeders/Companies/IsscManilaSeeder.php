@@ -44,7 +44,8 @@ class IsscManilaSeeder extends Seeder
 
         // FEATURES
         $features = [
-            ['country' => $country['iso2'], 'name' => 'Daily Tasks', 'code' => 'dailytask'],
+            ['country' => $country['iso2'], 'name' => 'Request Queue', 'code' => 'request_queue'],
+            ['country' => $country['iso2'], 'name' => 'Daily Tasks', 'code' => 'daily_task'],
             ['country' => $country['iso2'], 'name' => 'Mailing', 'code' => 'mail'],
             ['country' => $country['iso2'], 'name' => 'Reporting', 'code' => 'report'],
             ['country' => $country['iso2'], 'name' => 'Invoicing', 'code' => 'invoice'],
@@ -66,19 +67,28 @@ class IsscManilaSeeder extends Seeder
         ];
 
         foreach ($modules as $module) {
+            // Create Permissions for mapping module based permissions
+            $permissions = [
+                ['category' => 'module', 'resource' =>  $module['code'], 'action' => '*', 'description' => "Full access to {$module['code']} management"],
+                ['category' => 'module', 'resource' =>  $module['code'], 'action' => 'create', 'description' => "Manage {$module['code']}"],
+                ['category' => 'module', 'resource' =>  $module['code'], 'action' => 'edit', 'description' => "Manage {$module['code']}"],
+                ['category' => 'module', 'resource' =>  $module['code'], 'action' => 'delete', 'description' => "Manage {$module['code']}"],
+                ['category' => 'module', 'resource' =>  $module['code'], 'action' => 'view', 'description' => "Manage {$module['code']}"],
+            ];
+
+            // Set allowed permissions for modules
+            $allowedModulePermissions = array_map(function (array $permission) {
+                return "{$permission['resource']}:{$permission['action']}";
+            }, $permissions);
+
+            $module['configs'] = [
+                'allowed-permissions' => $allowedModulePermissions,
+            ];
+
             $module = Module::updateOrCreate(
                 ['country' => $country['iso2'], 'code' => $module['code']],
                 $module
             );
-
-            // Create Permissions for mapping module based permissions
-            $permissions = [
-                ['category' => 'module', 'action' => 'manage', 'resource' =>  $module['code'], 'description' => "Manage {$module['code']}"],
-                ['category' => 'module', 'action' => 'create', 'resource' =>  $module['code'], 'description' => "Manage {$module['code']}"],
-                ['category' => 'module', 'action' => 'edit', 'resource' =>  $module['code'], 'description' => "Manage {$module['code']}"],
-                ['category' => 'module', 'action' => 'delete', 'resource' =>  $module['code'], 'description' => "Manage {$module['code']}"],
-                ['category' => 'module', 'action' => 'view', 'resource' =>  $module['code'], 'description' => "Manage {$module['code']}"],
-            ];
 
             foreach ($permissions as $permission) {
                 Permission::updateOrCreate(

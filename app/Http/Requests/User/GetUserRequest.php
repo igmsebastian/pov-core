@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\User;
 
-use App\Rules\Permissions;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends FormRequest
+class GetUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +21,9 @@ class CreateUserRequest extends FormRequest
             '*:*',
             'user:*',
             'user:create',
+            'user:edit',
+            'user:delete',
+            'user:view',
         ];
 
         foreach ($allowedPermissions as $ability) {
@@ -41,13 +42,6 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'samaccountname' => ['required', Rule::unique('users', 'samaccountname')],
-            'configs' => ['required', 'array'],
-            'configs.permissions'   => ['required', 'array', 'min:1'],
-            'configs.permissions.*' => ['string', new Permissions],
-            'configs.modules'   => ['required', 'array', 'min:1'],
-            'configs.modules.*' => ['string', Rule::exists('modules', 'code')],
-        ];
+        return [];
     }
 }

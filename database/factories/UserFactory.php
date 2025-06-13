@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Team;
 use Illuminate\Support\Str;
+use App\Enums\UserStatusEnum;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,11 +26,26 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'id'                => (string) Str::ulid(),
+            'guid'              => Str::uuid(),
+            'samaccountname'    => $this->faker->unique()->userName,
+            'dn'                => $this->faker->domainName,
+            'name'              => $this->faker->name,
+            'email'             => $this->faker->unique()->safeEmail,
+            'title'             => $this->faker->jobTitle,
+            'company'           => $this->faker->company,
+            'division'          => $this->faker->word,
+            'memberof'          => implode(',', $this->faker->words(3)),
+            'department'        => $this->faker->word,
+            'departmentNumber'  => (string) $this->faker->numberBetween(100, 999),
+            'manager'           => $this->faker->name,
+            'manager_email'     => $this->faker->companyEmail,
+            'lead'              => $this->faker->name,
+            'lead_email'        => $this->faker->companyEmail,
+            'team_id'           => null,
+            'status'            => UserStatusEnum::ACTIVE,
+            'created_at'        => now(),
+            'updated_at'        => now(),
         ];
     }
 
@@ -40,5 +57,19 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Indicate that the user belongs to a team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withTeam()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'team_id' => Team::factory(),
+            ];
+        });
     }
 }

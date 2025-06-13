@@ -26,4 +26,39 @@ class Permission extends Model
         'configs',
         'metas',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'configs' => 'object',
+            'metas' => 'object',
+        ];
+    }
+
+    public static function allAbilities(): array
+    {
+        return self::query()
+            ->get(['resource', 'action'])
+            ->map(fn($p) => "{$p->resource}:{$p->action}")
+            ->toArray();
+    }
+
+    public static function abilitiesByResource(): array
+    {
+        return self::query()
+            ->select(['resource', 'action'])
+            ->get()
+            ->groupBy('resource')
+            ->mapWithKeys(function ($group, $resource) {
+                $abilities = $group->map(fn($permission) => "{$resource}:{$permission->action}")
+                    ->unique()
+                    ->values()
+                    ->toArray();
+                return [$resource => $abilities];
+            })
+            ->toArray();
+    }
 }

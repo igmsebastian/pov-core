@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
         ];
 
         // Fetch all permissions for the Admin-like access (or specific permissions you want)
-        $adminPermissions = Permission::where('action', 'manage') // Filter by 'manage' action
+        $adminPermissions = Permission::where('action', '*') // Filter by '*' action
             ->get()
             ->map(function ($permission) {
                 return $permission->resource . ':' . $permission->action; // Combine resource and action
@@ -42,6 +42,9 @@ class UserSeeder extends Seeder
             ->toArray();
 
         $modules = Module::get()->pluck('code')->toArray();
+
+        // Add User Module for User Management
+        $modules[] = 'user';
 
         // Loop through each user and assign permissions directly
         foreach ($users as $user) {

@@ -5,7 +5,7 @@ namespace App\Http\Resources\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserShortResource extends JsonResource
+class UserListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,13 @@ class UserShortResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'samaccountname' => $this->samaccountname,
             'name' => $this->name,
             'email' => $this->email,
-            'title' => $this->title,
+            'samaccountname' => $this->samaccountname,
             'company' => $this->company,
+            'title' => $this->title,
+            'manager' => $this->manager,
+            'status' => $this->status->asObject(),
         ];
     }
 }

@@ -10,16 +10,34 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository
 {
-    public function fetchClient(): object
-    {
-        return DB::table('oauth_clients')
-            ->where('password_client', true)
-            ->get()[0];
-    }
-
     public function fetchAll($filters): Collection
     {
         return User::filters($filters)->get();
+    }
+
+    public function findUserByEmail(string $email): User|null
+    {
+        return User::firstWhere('email', $email);
+    }
+
+    public function findUserBySamaccountname(string $samaccountname): User|null
+    {
+        return User::firstWhere('samaccountname', $samaccountname);
+    }
+
+    public function create(array $data): User
+    {
+        return User::create($data);
+    }
+
+    public function update(User $user, array $data): User
+    {
+        return tap($user)->update($data);
+    }
+
+    public function delete(User $user): bool
+    {
+        return User::delete($user);
     }
 
     public function syncLdapUser(LdapUser $ldapUser): User|null
@@ -69,20 +87,5 @@ class UserRepository
                 'manager_email' => $managerEmail,
             ]
         );
-    }
-
-    public function findUserByEmail(string $email): User|null
-    {
-        return User::firstWhere('email', $email);
-    }
-
-    public function findUserBySamaccountname(string $samaccountname): User|null
-    {
-        return User::firstWhere('samaccountname', $samaccountname);
-    }
-
-    public function create(array $data): Collection
-    {
-        return User::create($data);
     }
 }

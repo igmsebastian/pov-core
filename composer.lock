@@ -448,16 +448,16 @@
         },
         {
             "name": "directorytree/ldaprecord-laravel",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord-Laravel.git",
-                "reference": "15f56e01319852d41023633d3688ac4aa139aa6e"
+                "reference": "28c5a7aa42aa3fa631f9c0f0c8236fd19bc7b00c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord-Laravel/zipball/15f56e01319852d41023633d3688ac4aa139aa6e",
-                "reference": "15f56e01319852d41023633d3688ac4aa139aa6e",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord-Laravel/zipball/28c5a7aa42aa3fa631f9c0f0c8236fd19bc7b00c",
+                "reference": "28c5a7aa42aa3fa631f9c0f0c8236fd19bc7b00c",
                 "shasum": ""
             },
             "require": {
@@ -503,7 +503,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DirectoryTree/LdapRecord-Laravel/issues",
-                "source": "https://github.com/DirectoryTree/LdapRecord-Laravel/tree/v3.4.1"
+                "source": "https://github.com/DirectoryTree/LdapRecord-Laravel/tree/v3.4.2"
             },
             "funding": [
                 {
@@ -511,7 +511,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-21T19:16:44+00:00"
+            "time": "2025-06-13T15:46:25+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -8239,16 +8239,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.22",
+            "version": "11.5.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4cd72faaa8f811e4cc63040cba167757660a5538"
+                "reference": "86ebcd8a3dbcd1857d88505109b2a2b376501cde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4cd72faaa8f811e4cc63040cba167757660a5538",
-                "reference": "4cd72faaa8f811e4cc63040cba167757660a5538",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/86ebcd8a3dbcd1857d88505109b2a2b376501cde",
+                "reference": "86ebcd8a3dbcd1857d88505109b2a2b376501cde",
                 "shasum": ""
             },
             "require": {
@@ -8320,7 +8320,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.22"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.23"
             },
             "funding": [
                 {
@@ -8344,7 +8344,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-06T02:48:05+00:00"
+            "time": "2025-06-13T05:47:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",

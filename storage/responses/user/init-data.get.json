@@ -1,0 +1,110 @@
+{
+    "statuses": [
+        {
+            "id": 1,
+            "name": "active"
+        },
+        {
+            "id": 2,
+            "name": "new"
+        },
+        {
+            "id": 5,
+            "name": "inactive"
+        }
+    ],
+    "permissions": {
+        "*": ["*:*"],
+        "aarm": [
+            "aarm:*",
+            "aarm:create",
+            "aarm:delete",
+            "aarm:edit",
+            "aarm:view"
+        ],
+        "apcw": [
+            "apcw:*",
+            "apcw:create",
+            "apcw:delete",
+            "apcw:edit",
+            "apcw:view"
+        ],
+        "feature": [
+            "feature:*",
+            "feature:create",
+            "feature:delete",
+            "feature:edit",
+            "feature:view"
+        ],
+        "mail": [
+            "mail:*",
+            "mail:create",
+            "mail:delete",
+            "mail:edit",
+            "mail:receive",
+            "mail:send",
+            "mail:view"
+        ],
+        "module": [
+            "module:*",
+            "module:create",
+            "module:delete",
+            "module:edit",
+            "module:view"
+        ],
+        "notification": [
+            "notification:*",
+            "notification:create",
+            "notification:delete",
+            "notification:edit",
+            "notification:receive",
+            "notification:send",
+            "notification:view"
+        ],
+        "opr": ["opr:*", "opr:create", "opr:delete", "opr:edit", "opr:view"],
+        "process": [
+            "process:*",
+            "process:create",
+            "process:delete",
+            "process:edit",
+            "process:view"
+        ],
+        "report": [
+            "report:*",
+            "report:create",
+            "report:delete",
+            "report:edit",
+            "report:view"
+        ],
+        "ssh": ["ssh:*", "ssh:create", "ssh:delete", "ssh:edit", "ssh:view"],
+        "subprocess": [
+            "subprocess:*",
+            "subprocess:create",
+            "subprocess:delete",
+            "subprocess:edit",
+            "subprocess:view"
+        ],
+        "task": [
+            "task:*",
+            "task:create",
+            "task:delete",
+            "task:edit",
+            "task:view"
+        ],
+        "template": [
+            "template:*",
+            "template:create",
+            "template:delete",
+            "template:edit",
+            "template:view"
+        ],
+        "user": [
+            "user:*",
+            "user:create",
+            "user:delete",
+            "user:edit",
+            "user:view"
+        ]
+    },
+    "modules": ["aarm", "apcw", "opr", "ssh"]
+}

@@ -24,6 +24,17 @@ class Role extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            'configs' => 'object',
+            'metas' => 'object',
+        ];
+    }
+
+    /**
      * The permissions that belong to the role.
      */
     public function permissions(): BelongsToMany
