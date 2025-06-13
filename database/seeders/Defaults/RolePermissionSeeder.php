@@ -135,6 +135,7 @@ class RolePermissionSeeder extends Seeder
 
         // MODULE
         $modules = [
+            ['country' => '*', 'name' => 'Admin', 'code' => 'admin'],
             ['country' => '*', 'name' => 'User', 'code' => 'user'],
         ];
 

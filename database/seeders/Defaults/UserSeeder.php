@@ -43,9 +43,6 @@ class UserSeeder extends Seeder
 
         $modules = Module::get()->pluck('code')->toArray();
 
-        // Add User Module for User Management
-        $modules[] = 'user';
-
         // Loop through each user and assign permissions directly
         foreach ($users as $user) {
             // Create or update the user with the permissions in the configs field
