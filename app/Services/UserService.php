@@ -42,16 +42,21 @@ class UserService extends Service
         return new UserResource($user);
     }
 
+    public function requireLdapSync(string $samaccountname)
+    {
+        if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
+            $ldapUser = LdapUser::firstWhere('samaccountname', $samaccountname);
+            $this->userRepository->syncLdapUser($ldapUser);
+        }
+    }
+
     public function registerUser(Request $request)
     {
         $data = $request->all();
 
         $user = $this->userRepository->create($data);
 
-        if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
-            $ldapUser = LdapUser::firstWhere('samaccountname', $request->samaccountname);
-            $this->userRepository->syncLdapUser($ldapUser);
-        }
+        $this->requireLdapSync($request->samaccountname);
 
         return new UserShortResource($user);
     }
@@ -62,10 +67,7 @@ class UserService extends Service
 
         $this->userRepository->update($user, $data);
 
-        if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
-            $ldapUser = LdapUser::firstWhere('samaccountname', $request->samaccountname);
-            $this->userRepository->syncLdapUser($ldapUser);
-        }
+        $this->requireLdapSync($request->samaccountname);
 
         return $this->sendOkResponse();
     }
