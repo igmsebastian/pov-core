@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\LdapUser;
@@ -9,6 +10,8 @@ use App\Models\Permission;
 use App\Filters\UserFilter;
 use Illuminate\Http\Request;
 use App\Enums\UserStatusEnum;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Repositories\UserRepository;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserListResource;
@@ -42,40 +45,86 @@ class UserService extends Service
         return new UserResource($user);
     }
 
-    public function requireLdapSync(string $samaccountname)
-    {
-        if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
-            $ldapUser = LdapUser::firstWhere('samaccountname', $samaccountname);
-            $this->userRepository->syncLdapUser($ldapUser);
-        }
-    }
-
     public function registerUser(Request $request)
     {
-        $data = $request->all();
+        try
+        {
+            DB::beginTransaction();
 
-        $user = $this->userRepository->create($data);
+            $data = $request->all();
 
-        $this->requireLdapSync($request->samaccountname);
+            $user = $this->userRepository->create($data);
 
-        return new UserShortResource($user);
+            if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
+                $this->authService->requireLdapSync($request->samaccountname);
+            }
+
+            DB::commit();
+
+            return new UserShortResource($user);
+        } catch (Exception $e) {
+            Log::critical(sprintf(
+                'USERCREATEEXCEPTION message: %s, file: %s, line: %s',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+
+            DB::rollBack();
+
+            return $this->sendErrorResponse($e);
+        }
     }
 
     public function updateUser(Request $request, User $user)
     {
-        $data = $request->all();
+        try {
+            DB::beginTransaction();
 
-        $this->userRepository->update($user, $data);
+            $data = $request->all();
 
-        $this->requireLdapSync($request->samaccountname);
+            $user = $this->userRepository->update($user, $data);
 
-        return $this->sendOkResponse();
+            if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
+                $this->authService->requireLdapSync($request->samaccountname);
+            }
+
+            DB::commit();
+
+            return new UserShortResource($user);
+        } catch (Exception $e) {
+            Log::critical(sprintf(
+                'USERUPDATEEXCEPTION message: %s, file: %s, line: %s',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+
+            DB::rollBack();
+
+            return $this->sendErrorResponse($e);
+        }
     }
 
     public function deleteUsers(Request $request)
     {
-        User::destroy($request->ids);
+        try {
+            DB::beginTransaction();
 
-        return $this->sendOkResponse();
+            User::destroy($request->ids);
+
+            return $this->sendOkResponse();
+        } catch (Exception $e) {
+            Log::critical(sprintf(
+                'USERDELETEEXCEPTION message: %s, file: %s, line: %s',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+
+            DB::rollBack();
+
+            return $this->sendErrorResponse($e);
+        }
     }
 }

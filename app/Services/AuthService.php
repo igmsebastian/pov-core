@@ -52,19 +52,24 @@ class AuthService extends Service
 
             [$domain, $username] = explode('\\', $logonUser);
 
-            $ldapUser = LdapUser::firstWhere('samaccountname', $username);
-
-            if (is_null($ldapUser)) {
-                throw new NotFoundHttpException("LDAP user not found: $logonUser");
-            }
-
-            $user = $this->userRepository->syncLdapUser($ldapUser);
+            $user = $this->requireLdapSync($username);
         } else {
             $logonUser = config('ldap.test.samaccountname');
             $user = $this->userRepository->findUserBySamaccountname($logonUser);
         }
 
         return $user;
+    }
+
+    public function requireLdapSync(string $samaccountname)
+    {
+        $ldapUser = LdapUser::firstWhere('samaccountname', $samaccountname);
+
+        if (is_null($ldapUser)) {
+            throw new NotFoundHttpException("LDAP user not found: $samaccountname");
+        }
+
+        return $this->userRepository->syncLdapUser($ldapUser);
     }
 
     public function getAccessToken(Request $request)
