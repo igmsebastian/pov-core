@@ -62,6 +62,11 @@ class UserService extends Service
 
         $this->userRepository->update($user, $data);
 
+        if (config('ldap.enabled') === true && $this->authService->isLdapAvailable()) {
+            $ldapUser = LdapUser::firstWhere('samaccountname', $request->samaccountname);
+            $this->userRepository->syncLdapUser($ldapUser);
+        }
+
         return $this->sendOkResponse();
     }
 
