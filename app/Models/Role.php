@@ -29,8 +29,8 @@ class Role extends Model
     protected function casts(): array
     {
         return [
-            'configs' => 'object',
-            'metas' => 'object',
+            'configs' => 'array',
+            'metas' => 'array',
         ];
     }
 

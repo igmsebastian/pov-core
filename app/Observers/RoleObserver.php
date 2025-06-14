@@ -12,25 +12,22 @@ class RoleObserver
      */
     public function creating(Role $role): void
     {
-        if (empty($role->configs)) {
-            $role->configs = json_encode([
-                'enabled' => true,
-            ]);
+        $configs = $role->configs ?? [];
+        $metas = $role->metas ?? [];
+
+        if (!array_key_exists('enabled', $configs)) {
+            $configs['enabled'] = true;
         }
 
-        // Set default values for metas if not provided
-        if (empty($role->metas)) {
-            $role->metas = json_encode([
-                'style' => null,
-                'icon' => null,
-                'hexColor' => null,
-                'visibility' => true,
-                'custom' => [],
-            ]);
+        if (!array_key_exists('visibility', $metas)) {
+            $metas['visibility'] = true;
         }
+
+        $role->configs = $configs;
+        $role->metas = $metas;
 
         if (empty($role->code)) {
-            $role->code = Str::slug($role->name); // Ensures slug is set based on role name
+            $role->code = Str::slug($role->name, '_');
         }
     }
 }

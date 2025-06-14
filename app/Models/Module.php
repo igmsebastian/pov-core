@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Enums\StatusEnum;
+use App\Observers\ModuleObserver;
 use App\Models\Concerns\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([ModuleObserver::class])]
 class Module extends Model
 {
     use Filterable, HasFactory;
@@ -32,8 +35,8 @@ class Module extends Model
     {
         return [
             'status' => StatusEnum::class,
-            'configs' => 'object',
-            'metas' => 'object',
+            'configs' => 'array',
+            'metas' => 'array',
         ];
     }
 

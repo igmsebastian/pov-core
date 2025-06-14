@@ -32,8 +32,8 @@ class Company extends Model
     {
         return [
             'status' => StatusEnum::class,
-            'configs' => 'object',
-            'metas' => 'object',
+            'configs' => 'array',
+            'metas' => 'array',
         ];
     }
 }

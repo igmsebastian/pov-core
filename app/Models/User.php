@@ -57,8 +57,8 @@ class User extends Authenticatable implements LdapAuthenticatable
     {
         return [
             'status' => StatusEnum::class,
-            'configs' => 'object',
-            'metas' => 'object',
+            'configs' => 'array',
+            'metas' => 'array',
             'created_at'  => 'datetime:Y-m-d',
             'updated_at'  => 'datetime:Y-m-d',
         ];

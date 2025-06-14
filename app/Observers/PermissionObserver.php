@@ -7,27 +7,22 @@ use App\Models\Permission;
 class PermissionObserver
 {
     /**
-     * Handle the Permission "created" event.
+     * Handle the Permission "creating" event.
      */
-    public function created(Permission $permission): void
+    public function creating(Permission $permission): void
     {
-        if (empty($permission->configs)) {
-            $permission->configs = json_encode([
-                'enabled' => true,
-            ]);
+        $configs = $permission->configs ?? [];
+        $metas = $permission->metas ?? [];
+
+        if (!array_key_exists('enabled', $configs)) {
+            $configs['enabled'] = true;
         }
 
-        // Set default values for metas if not provided
-        if (empty($permission->metas)) {
-            $permission->metas = json_encode([
-                'style' => null,
-                'icon' => null,
-                'hexColor' => null,
-                'visibility' => true,
-                'custom' => [],
-            ]);
+        if (!array_key_exists('visibility', $metas)) {
+            $metas['visibility'] = true;
         }
 
-        $permission->save();
+        $permission->configs = $configs;
+        $permission->metas = $metas;
     }
 }

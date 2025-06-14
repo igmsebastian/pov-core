@@ -27,7 +27,7 @@ class EnsureUserHasModuleAccess
             return $next($request);
         }
 
-        if (in_array($module, $user->configs->modules)) {
+        if (in_array($module, $user->configs['modules'])) {
             return $next($request);
         }
 

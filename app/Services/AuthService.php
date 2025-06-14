@@ -93,7 +93,7 @@ class AuthService extends Service
         $user->tokens()->delete();
 
         // Create a token for the user (Sanctum token)
-        $token = $user->createToken('Access Token', $user->configs->permissions);
+        $token = $user->createToken('Access Token', $user->configs['permissions']);
 
         // Check if the request expects JSON or not
         if (!$request->wantsJson()) {

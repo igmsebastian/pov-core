@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\FeatureTypeEnum;
 use App\Enums\StatusEnum;
+use App\Enums\FeatureTypeEnum;
+use App\Observers\FeatureObserver;
 use App\Models\Concerns\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([FeatureObserver::class])]
 class Feature extends Model
 {
     use Filterable, HasFactory;
@@ -35,8 +38,8 @@ class Feature extends Model
         return [
             'type' => FeatureTypeEnum::class,
             'status' => StatusEnum::class,
-            'configs' => 'object',
-            'metas' => 'object',
+            'configs' => 'array',
+            'metas' => 'array',
         ];
     }
 
