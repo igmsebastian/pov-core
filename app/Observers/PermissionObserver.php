@@ -14,7 +14,6 @@ class PermissionObserver
         if (empty($permission->configs)) {
             $permission->configs = json_encode([
                 'enabled' => true,
-                'visibility' => true,
             ]);
         }
 
@@ -24,6 +23,7 @@ class PermissionObserver
                 'style' => null,
                 'icon' => null,
                 'hexColor' => null,
+                'visibility' => true,
                 'custom' => [],
             ]);
         }

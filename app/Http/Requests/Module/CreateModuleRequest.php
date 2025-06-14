@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Module;
 
+use App\Rules\Country;
 use App\Rules\Permissions;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends FormRequest
+class CreateModuleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,8 +22,8 @@ class CreateUserRequest extends FormRequest
 
         $allowedPermissions = [
             '*:*',
-            'user:*',
-            'user:create',
+            'module:*',
+            'module:create',
         ];
 
         foreach ($allowedPermissions as $ability) {
@@ -42,19 +43,24 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'samaccountname' => ['required', Rule::unique('users', 'samaccountname')],
+            'country' => ['required', new Country],
+            'name' => ['required', Rule::unique('modules', 'name')],
+            'code' => ['required', Rule::unique('modules', 'code')],
+            'description' => ['nullable'],
             'configs' => ['required', 'array'],
-            'configs.permissions'   => ['required', 'array', 'min:1'],
-            'configs.permissions.*' => ['string', new Permissions],
-            'configs.modules'   => ['required', 'array', 'min:1'],
-            'configs.modules.*' => ['string', Rule::exists('modules', 'code')],
+            'configs.enabled'   => ['required', 'boolean'],
+            'configs.allowed_permissions'   => ['required', 'array', 'min:1'],
+            'configs.allowed_permissions.*' => ['string', new Permissions],
+            'configs.sidemenus'   => ['required', 'array', 'min:1'],
+            'configs.sidemenus.*' => ['string', Rule::unique('features', 'code')],
             'configs.custom_fields' => ['nullable', 'array'],
             'configs.custom_fields.*.label' => ['nullable', 'string'],
             'configs.custom_fields.*.type' => ['nullable', 'string'],
             'configs.custom_fields.*.value' => ['nullable', 'string'],
             'configs.custom_fields.*.options' => ['nullable', 'array'],
             'configs.custom_fields.*.regex' => ['nullable', 'string'],
-            'metas' => ['sometimes', 'nullable', 'array'],
+            'metas' => ['required', 'array'],
+            'metas.visibility'   => ['required', 'boolean'],
             'metas.priority' => ['sometimes', 'nullable', 'integer'],
             'metas.order' => ['sometimes', 'nullable', 'integer'],
             'metas.icon' => ['sometimes', 'nullable', 'string'],

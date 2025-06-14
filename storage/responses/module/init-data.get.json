@@ -1,0 +1,52 @@
+{
+    "statuses": [
+        {
+            "label": "active",
+            "value": 1
+        },
+        {
+            "label": "inactive",
+            "value": 5
+        }
+    ],
+    "countries": [
+        {
+            "label": "Afghanistan",
+            "value": "AF"
+        },
+        {
+            "label": "Åland Islands",
+            "value": "AX"
+        },
+        {
+            "label": "Albania",
+            "value": "AL"
+        },
+        {
+            "label": "Algeria",
+            "value": "DZ"
+        }
+    ],
+    "features": [
+        {
+            "code": "daily_task",
+            "country": "PH"
+        },
+        {
+            "code": "invoice",
+            "country": "PH"
+        },
+        {
+            "code": "mail",
+            "country": "PH"
+        },
+        {
+            "code": "report",
+            "country": "PH"
+        },
+        {
+            "code": "request_queue",
+            "country": "PH"
+        }
+    ]
+}

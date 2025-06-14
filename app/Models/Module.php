@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
+use App\Models\Concerns\Filterable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Module extends Model
 {
+    use Filterable, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,6 +31,7 @@ class Module extends Model
     protected function casts(): array
     {
         return [
+            'status' => StatusEnum::class,
             'configs' => 'object',
             'metas' => 'object',
         ];

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Team;
+use App\Enums\StatusEnum;
 use Illuminate\Support\Str;
-use App\Enums\UserStatusEnum;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -43,7 +43,7 @@ class UserFactory extends Factory
             'lead'              => $this->faker->name,
             'lead_email'        => $this->faker->companyEmail,
             'team_id'           => null,
-            'status'            => UserStatusEnum::ACTIVE,
+            'status'            => StatusEnum::ACTIVE,
             'created_at'        => now(),
             'updated_at'        => now(),
         ];

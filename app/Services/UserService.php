@@ -8,7 +8,7 @@ use App\Models\Module;
 use App\Models\Permission;
 use App\Filters\UserFilter;
 use Illuminate\Http\Request;
-use App\Enums\UserStatusEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\UserRepository;
@@ -33,7 +33,7 @@ class UserService extends Service
     public function getFormInit()
     {
         return $this->sendWithSuccessResponse([
-            'statuses' => UserStatusEnum::options(),
+            'statuses' => StatusEnum::commonStatusesForForm(),
             'permissions' => Permission::abilitiesByResource(),
             'modules' => Module::allModules(),
         ]);

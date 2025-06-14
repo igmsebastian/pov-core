@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Rbac;
+namespace App\Http\Resources\Feature;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoleResource extends JsonResource
+class FeatureResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,16 +16,20 @@ class RoleResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'country' => $this->country,
             'name' => $this->name,
+            'code' => $this->code,
+            'type' => $this->type->asObject(),
+            'status' => $this->status->asObject(),
+            'configs' => $this->configs,
+            'metas' => $this->metas,
             'description' => $this->description,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'created_by_email' => $this->created_by_email,
+            'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by,
             'updated_by_email' => $this->updated_by_email,
-            'configs' => $this->configs,
-            'metas' => $this->metas
         ];
     }
 }

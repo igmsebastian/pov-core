@@ -1,0 +1,30 @@
+{
+    "statuses": [
+        {
+            "label": "active",
+            "value": 1
+        },
+        {
+            "label": "inactive",
+            "value": 5
+        }
+    ],
+    "countries": [
+        {
+            "label": "Afghanistan",
+            "value": "AF"
+        },
+        {
+            "label": "Åland Islands",
+            "value": "AX"
+        },
+        {
+            "label": "Albania",
+            "value": "AL"
+        },
+        {
+            "label": "Algeria",
+            "value": "DZ"
+        }
+    ]
+}

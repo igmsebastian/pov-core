@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\UserStatusEnum;
+use App\Enums\StatusEnum;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Concerns\Filterable;
@@ -56,7 +56,7 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected function casts(): array
     {
         return [
-            'status' => UserStatusEnum::class,
+            'status' => StatusEnum::class,
             'configs' => 'object',
             'metas' => 'object',
             'created_at'  => 'datetime:Y-m-d',

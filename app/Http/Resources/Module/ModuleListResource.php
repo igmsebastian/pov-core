@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Rbac;
+namespace App\Http\Resources\Module;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PermissionResource extends JsonResource
+class ModuleListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,19 +16,17 @@ class PermissionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'action' => $this->action,
-            'resource' => $this->resource,
+            'country' => $this->country,
+            'name' => $this->name,
+            'code' => $this->code,
+            'status' => $this->status->asObject(),
+            'enabled' => $this->configs->enabled ?? false,
+            'metas' => $this->metas,
             'description' => $this->description,
-            'category' => $this->category,
-            'scope' => $this->category,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
             'created_by_email' => $this->created_by_email,
-            'updated_by' => $this->updated_by,
+            'updated_at' => $this->updated_at,
             'updated_by_email' => $this->updated_by_email,
-            'configs' => $this->configs,
-            'metas' => $this->metas
         ];
     }
 }

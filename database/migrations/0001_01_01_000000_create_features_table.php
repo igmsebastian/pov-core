@@ -16,14 +16,16 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('country', 2)->comment('iso2')->index();
             $table->string('name')->nullable();
-            $table->string('code')->nullable();
-            $table->string('type')->nullable();
+            $table->string('code')->index();
+            $table->smallInteger('type')->index();
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(StatusEnum::ACTIVE);
             $table->timestamps();
 
             addAuditColumns($table);
             addConfigColumns($table);
+
+            $table->unique(['country', 'code', 'type'], 'unique_country_code_type');
         });
     }
 

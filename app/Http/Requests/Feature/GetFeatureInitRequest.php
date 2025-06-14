@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Feature;
 
-use App\Enums\StatusEnum;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserStatusRequest extends FormRequest
+class GetFeatureInitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,8 +19,11 @@ class UpdateUserStatusRequest extends FormRequest
 
         $allowedPermissions = [
             '*:*',
-            'user:*',
-            'user:edit',
+            'feature:*',
+            'feature:create',
+            'feature:edit',
+            'feature:delete',
+            'feature:view',
         ];
 
         foreach ($allowedPermissions as $ability) {
@@ -41,10 +42,6 @@ class UpdateUserStatusRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'ids'   => ['required', 'array', 'min:1'],
-            'ids.*'   => ['required', 'string', 'distinct', Rule::exists('users', 'id')],
-            'status' => ['required', Rule::in(array_column(StatusEnum::commonStatuses(), 'value'))],
-        ];
+        return [];
     }
 }

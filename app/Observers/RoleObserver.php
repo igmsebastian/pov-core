@@ -15,7 +15,6 @@ class RoleObserver
         if (empty($role->configs)) {
             $role->configs = json_encode([
                 'enabled' => true,
-                'visibility' => true,
             ]);
         }
 
@@ -25,6 +24,7 @@ class RoleObserver
                 'style' => null,
                 'icon' => null,
                 'hexColor' => null,
+                'visibility' => true,
                 'custom' => [],
             ]);
         }

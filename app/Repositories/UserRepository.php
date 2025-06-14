@@ -35,9 +35,13 @@ class UserRepository
         return tap($user)->update($data);
     }
 
-    public function delete(User $user): bool
+    public function delete(User|array $module): bool|int
     {
-        return User::delete($user);
+        if (is_array($module)) {
+            return User::destroy($module);
+        }
+
+        return User::delete($module);
     }
 
     public function syncLdapUser(LdapUser $ldapUser): User|null
