@@ -17,6 +17,10 @@ class SubProcess extends Model
         'status',
         'configs',
         'metas',
+        'created_by',
+        'created_by_email',
+        'updated_by',
+        'updated_by_email',
     ];
 
     /**
@@ -28,5 +32,12 @@ class SubProcess extends Model
             'configs' => 'array',
             'metas' => 'array',
         ];
+    }
+
+    public function steps()
+    {
+        return $this->belongsToMany(Step::class, 'sub_process_steps')
+            ->withPivot('sequence', 'is_optional', 'condition')
+            ->orderBy('pivot_sequence');
     }
 }

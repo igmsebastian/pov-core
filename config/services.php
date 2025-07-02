@@ -24,6 +24,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'outlook' => [
+        'key' => env('OUTLOOK_ACCESS_KEY'),
+        'secret' => env('OUTLOOK_SECRET_ACCESS_KEY'),
+        'tenant' => env('OUTLOOK_TENANT'),
+        'scopes' => env('OUTLOOK_SCOPES', null),
+        'email' => env('OUTLOOK_EMAIL', null),
+    ],
+
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],

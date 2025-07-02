@@ -23,6 +23,10 @@ class Team extends Model
         'status',
         'configs',
         'metas',
+        'created_by',
+        'created_by_email',
+        'updated_by',
+        'updated_by_email',
     ];
 
     /**

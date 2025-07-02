@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RunController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\FeatureController;
 
@@ -47,3 +48,6 @@ Route::prefix('features')
             Route::put('/', 'updateFeature');
         });
     });
+
+
+Route::get('steps/{step}/run', [RunController::class, 'execute']);

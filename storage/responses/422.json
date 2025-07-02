@@ -1,0 +1,6 @@
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "fieldName": ["error-message."]
+    }
+}

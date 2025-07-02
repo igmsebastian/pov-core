@@ -93,16 +93,7 @@ class UserController extends Controller
     #[Response(status: 400, description: 'Bad Request', content: '{"message": "Bad Request."}')]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function createUser(CreateUserRequest $request)
     {
@@ -119,16 +110,7 @@ class UserController extends Controller
     #[ResponseFromApiResource(UserShortResource::class, User::class)]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function updateUser(UpdateUserRequest $request, User $user)
     {
@@ -145,16 +127,7 @@ class UserController extends Controller
     #[ResponseFromFile("storage/responses/success.json")]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function updateUserStatus(UpdateUserStatusRequest $request, User $user)
     {
@@ -171,16 +144,7 @@ class UserController extends Controller
     #[ResponseFromFile("storage/responses/success.json")]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function deleteUsers(DeleteUserRequest $request)
     {

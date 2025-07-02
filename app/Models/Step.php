@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Process extends Model
+use Illuminate\Database\Eloquent\Model;
+
+class Step extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -10,14 +12,19 @@ class Process extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'company_id',
-        'module_id',
         'country',
+        'feature_id',
+        'process_id',
+        'sub_process_id',
         'name',
+        'label',
+        'exec_type',
+        'exec',
         'description',
         'status',
         'configs',
         'metas',
+        'logs',
         'created_by',
         'created_by_email',
         'updated_by',
@@ -32,13 +39,7 @@ class Process extends Model
         return [
             'configs' => 'array',
             'metas' => 'array',
+            'logs' => 'array',
         ];
-    }
-
-    public function steps()
-    {
-        return $this->belongsToMany(Step::class, 'process_steps')
-            ->withPivot('sequence', 'is_optional', 'condition')
-            ->orderBy('pivot_sequence');
     }
 }

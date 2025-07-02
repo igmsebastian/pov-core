@@ -20,6 +20,10 @@ trait HasCollectionPagination
 
         $items = $items instanceof Collection ? $items : Collection::make($items);
 
+        if (!isset($options['path'])) {
+            $options['path'] = request()->url();
+        }
+
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
 	}
 }

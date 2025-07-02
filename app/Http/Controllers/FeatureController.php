@@ -94,16 +94,7 @@ class FeatureController extends Controller
     #[Response(status: 400, description: 'Bad Request', content: '{"message": "Bad Request."}')]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function createFeature(CreateFeatureRequest $request)
     {
@@ -120,16 +111,7 @@ class FeatureController extends Controller
     #[ResponseFromApiResource(FeatureResource::class, Feature::class)]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function updateFeature(UpdateFeatureRequest $request, Feature $feature)
     {
@@ -146,16 +128,7 @@ class FeatureController extends Controller
     #[ResponseFromFile("storage/responses/success.json")]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function updateFeatureStatus(UpdateFeatureStatusRequest $request, Feature $feature)
     {
@@ -172,16 +145,7 @@ class FeatureController extends Controller
     #[ResponseFromFile("storage/responses/success.json")]
     #[Response(status: 401, description: "Not found", content: '{"message": "Unauthenticated."}')]
     #[Response(status: 403, description: "Forbidden", content: '{"message": "This action is unauthorized."}')]
-    #[Response(
-        status: 422,
-        description: 'Validation Error',
-        content: '{
-  "message": "The given data was invalid.",
-  "errors": {
-    "fieldName": ["error-message."],
-  }
-}'
-    )]
+    #[ResponseFromFile("storage/responses/422.json", status: 422)]
     #[Response(status: 500, description: 'Internal Server Error', content: '{"message": "Server error."}')]
     public function deleteFeatures(DeleteFeatureRequest $request)
     {
